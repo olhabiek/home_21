@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useDispatch, useSelector } from "react-redux";
+import Question from "./components/Question";
+import Result from "./components/Result";
+import { calculateScore } from "./features/questionnaire/questionnaireSlice";
 
 function App() {
+  const questions = useSelector((state) => state.questionnaire.questions);
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    dispatch(calculateScore());
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {questions.map((question) => (
+        <Question key={question.id} question={question} />
+      ))}
+      <button onClick={handleSubmit}>Submit</button>
+      <Result />
     </div>
   );
 }
